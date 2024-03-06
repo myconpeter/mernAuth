@@ -83,8 +83,13 @@ const logoutUser = asyncHandler(async (req, res) => {
 //@acess private
 
 const userProfile = asyncHandler(async (req, res) => {
+    const user = {
+        _id: req.user._id,
+        name: req.user.name,
+        email: req.user.email
+    }
 
-    res.json({ msg: "Profile User" }).status(200)
+    res.json(user).status(200)
 })
 
 
@@ -94,7 +99,32 @@ const userProfile = asyncHandler(async (req, res) => {
 
 const userEdit = asyncHandler(async (req, res) => {
 
-    res.json({ msg: "Edit User" }).status(200)
+    const user = await User.findById(req.user._id)
+
+
+    if (user) {
+        user.name = req.body.name || user.name,
+            user.email = req.body.email || user.email
+
+        if (req.body.password) {
+            user.password = req.body.password
+        }
+
+        const updatedUser = await user.save()
+        console.log(updatedUser)
+
+        res.status(200).json({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email
+        })
+
+
+    } else {
+        res.status(401)
+        throw new Error('User not found')
+    }
+
 })
 
 export { authUser, userEdit, userProfile, logoutUser, registerUser }
