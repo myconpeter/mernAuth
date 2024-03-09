@@ -1,0 +1,55 @@
+.home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid gray;
+    border-radius: 5%;
+    margin: 50px;
+    text-align: center;
+    padding: 20px 20px;
+    background-color: whitesmoke;
+
+}
+
+.home div {
+    margin-top: 15px;
+}
+
+.home h2 {
+    font-size: 30px;
+}
+
+.home p {
+    font-size: 15px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+
+}
+
+.login {
+    margin: 0 10px;
+    color: white;
+    background-color: blue;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+.register {
+    margin: 0 10px;
+    color: white;
+    background-color: gray;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+.text {
+    font-size: 10px;
+}

@@ -1,0 +1,49 @@
+header {
+    background-color: black;
+    margin: 0;
+    padding: 0 10px;
+
+
+    display: flex;
+    justify-content: space-between;
+    color: beige;
+    height: 75px;
+
+}
+
+header div {
+    cursor: pointer;
+}
+
+header div:hover {
+    transition: all 1s ease-out;
+    transform: scale(1.1);
+    /* Scale the text to 110% of its original size */
+}
+
+.userAction {
+    display: flex;
+}
+
+.eachAction {
+    display: flex;
+    margin-left: 2px;
+
+    align-items: center;
+
+    padding: 0px 10px;
+    color: aliceblue;
+    text-decoration: none;
+    font-size: 20px;
+
+}
+
+.eachAction p {
+    margin-left: 5px;
+}
+
+
+
+/* media screen */
+
+@media screen and (max-width: 649px) {}
