@@ -9,12 +9,16 @@ import {
 // components
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Header />}>
       <Route index element={<HomePage />} />
+      <Route path='login' element={<LoginPage />} />
+      <Route path='signup' element={<SignUpPage />} />
 
 
     </Route>

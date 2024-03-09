@@ -20,7 +20,7 @@ const HomePage = () => {
                 <div className='buttons'>
 
                     <Link to='/login' className='login'>LogIn</Link>
-                    <Link to='/register' className='register'>Register</Link>
+                    <Link to='/signup' className='register'>Register</Link>
                 </div>
             </div>
 

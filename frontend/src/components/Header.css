@@ -42,8 +42,9 @@ header div:hover {
     margin-left: 5px;
 }
 
+a {
+    text-decoration: none;
+}
 
 
 /* media screen */
-
-@media screen and (max-width: 649px) {}

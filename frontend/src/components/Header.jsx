@@ -9,9 +9,9 @@ const Header = () => {
     return (
         <div>
             <header className="header">
-                <div>
-                    <h1>MERN AUTH</h1>
-                </div>
+                <Link>
+                    <h1 className='mern'>MERN AUTH</h1>
+                </Link>
 
                 <div className='userAction'>
                     <Link to='/login' className='eachAction' >
@@ -23,7 +23,7 @@ const Header = () => {
 
                     </Link>
 
-                    <Link to='/register' className='eachAction' >
+                    <Link to='/signup' className='eachAction' >
 
                         <FaUserPlus />
 
