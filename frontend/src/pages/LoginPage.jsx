@@ -16,10 +16,14 @@ const LoginPage = () => {
 
     const [login, { isLoading }] = useLoginMutation()
 
-    const { userInfo } = useSelector((state) => (state.auth))
+    const { userInfo } = useSelector((state) => state.auth)
+
+
+
 
     useEffect(() => {
         if (userInfo) {
+            navigate('/')
 
         }
     }, [navigate, userInfo])
@@ -27,9 +31,11 @@ const LoginPage = () => {
     const onSubmit = async (e) => {
         e.preventDefault()
         try {
-            const res = await login({ email, password }).unwrap()
+            const res = await login({ email, password })
+
             dispatch(setCredentials({ ...res }))
             navigate('/')
+
         } catch (err) {
             toast.error(err?.data?.message || err.error)
         }
