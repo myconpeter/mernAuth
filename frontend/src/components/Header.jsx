@@ -2,7 +2,10 @@ import './Header.css'
 import { MdLogin } from "react-icons/md";
 import { FaUserPlus } from "react-icons/fa";
 import { Outlet } from 'react-router-dom';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 
 const Header = () => {
@@ -34,6 +37,8 @@ const Header = () => {
 
                 </div>
             </header>
+
+            <ToastContainer />
             <Outlet />
         </div>
     )
