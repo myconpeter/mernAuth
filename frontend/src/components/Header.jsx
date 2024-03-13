@@ -17,7 +17,7 @@ import { useLogoutMutation } from '../slices/userApiSlice';
 
 const Header = () => {
     const { userInfo } = useSelector((state) => state.auth)
-
+    // console.log(userInfo)
 
     const [logoutApiCall] = useLogoutMutation()
 
@@ -43,7 +43,28 @@ const Header = () => {
                     <h1 className='mern'>MERN AUTH</h1>
                 </Link>
 
-                {!userInfo ? (<>
+                {userInfo ? (<>
+                    <div className='userAction'>
+                        <Link className='eachAction' >
+
+
+                            <div>
+                                <div>hello {userInfo.data.name}</div>
+                            </div>
+
+
+
+                            <MdLogin />
+                        </Link>
+                        <div className='actions'>
+                            <Link to='/profile'> Update</Link>
+                            <div onClick={logoutHandler}>Logout</div>
+                        </div>
+                    </div>
+
+
+
+                </>) : (<>
                     <div className='userAction'>
                         <Link to='/login' className='eachAction' >
 
@@ -63,25 +84,9 @@ const Header = () => {
 
                         </Link>
 
-                    </div></>) : (<>
-                        <div className='userAction'>
-                            <Link className='eachAction' >
-                                <div>
-                                    <div onClick={logoutHandler}>{userInfo.data.name}</div>
-                                </div>
+                    </div>
 
-                                <MdLogin />
-
-
-
-
-                            </Link>
-
-
-
-                        </div>
-
-                    </>)}
+                </>)}
 
 
             </header>

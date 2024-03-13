@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLoginMutation } from '../slices/userApiSlice'
 import { setCredentials } from '../slices/authSlice'
 import { toast } from 'react-toastify'
+import Loader from '../components/Loader'
 
 const LoginPage = () => {
     const [email, setEmail] = useState('')
@@ -30,15 +31,21 @@ const LoginPage = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault()
-        try {
-            const res = await login({ email, password })
+
+        const res = await login({ email, password })
+
+
+        if (res.error) {
+            toast.error(res.error.data.message)
+
+        } else {
 
             dispatch(setCredentials({ ...res }))
             navigate('/')
+            toast.success(`Welcome ${res.data.name}`)
 
-        } catch (err) {
-            toast.error(err?.data?.message || err.error)
         }
+
     }
 
     return (
@@ -62,7 +69,9 @@ const LoginPage = () => {
                     <input type="password" placeholder='Enter Password' value={password} onChange={(e) => (setPassword(e.target.value))} />
                 </div>
 
-                <button type='submit'>Log in</button>
+                {isLoading ? <Loader /> : <button type='submit'>Log in</button>}
+
+
 
                 <div className='newCustomer'>
                     <p>New Customer?  </p>

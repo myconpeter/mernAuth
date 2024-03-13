@@ -13,6 +13,8 @@ import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
+import ProfilePage from './pages/ProfilePage';
+import PrivateRoute from './components/PrivateRoute';
 
 
 
@@ -23,6 +25,12 @@ const router = createBrowserRouter(
       <Route index element={<HomePage />} />
       <Route path='login' element={<LoginPage />} />
       <Route path='signup' element={<SignUpPage />} />
+
+      <Route path='' element={<PrivateRoute />}>
+        <Route path='profile' element={<ProfilePage />} />
+
+      </Route>
+
 
 
     </Route>

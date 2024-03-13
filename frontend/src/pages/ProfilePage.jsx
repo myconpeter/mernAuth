@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import './SignUpPage.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCredentials } from '../slices/authSlice'
 import { toast } from 'react-toastify'
 import Loader from '../components/Loader'
-import { useRegisterMutation } from '../slices/userApiSlice'
+import { useProfileMutation } from '../slices/userApiSlice'
 
-const SignUpPage = () => {
+
+const ProfilePage = () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -16,24 +17,33 @@ const SignUpPage = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const [register, { isLoading }] = useRegisterMutation()
+    const [profile, { isLoading }] = useProfileMutation()
 
     const { userInfo } = useSelector((state) => state.auth)
 
     useEffect(() => {
-        if (userInfo) {
-            navigate('/')
+        console.log(userInfo.data.name)
+        setName(userInfo.data.name)
+        setEmail(userInfo.data.email)
 
-        }
-    }, [navigate, userInfo])
+
+    }, [userInfo.setName, userInfo.setEmail])
 
     const onSubmit = async (e) => {
         e.preventDefault()
         if (password !== confirmpassword) {
             toast.error('Password do not Match')
         } else {
-            const res = await register({ name, email, password })
+            const res = await profile({
+                _id: userInfo._id,
+                name,
+                email,
+                password
 
+
+            })
+
+            console.log(res)
 
             if (res.error) {
                 toast.error(res.error.data.message)
@@ -42,9 +52,10 @@ const SignUpPage = () => {
 
                 dispatch(setCredentials({ ...res }))
                 navigate('/')
-                toast.success(`Welcome ${res.data.name}`)
+                toast.success(`profile updated`)
 
             }
+
         }
     }
 
@@ -53,7 +64,7 @@ const SignUpPage = () => {
 
             <form onSubmit={onSubmit} className='LoginForm'>
                 <div>
-                    <h2>Sign Up</h2>
+                    <h2>Update User</h2>
                 </div>
 
                 <div className='eachInput'>
@@ -79,17 +90,12 @@ const SignUpPage = () => {
                     <input type="password" placeholder='Enter Password' value={confirmpassword} onChange={(e) => (setConfirmpassword(e.target.value))} />
                 </div>
 
-                {isLoading ? <Loader /> : <button type='submit'>Register</button>}
+                <button type='submit'>Update</button>
 
-                <div className='newCustomer'>
-                    <p>Already have an Account ? </p>
-
-                    <Link to='/login'> Login</Link>
-                </div>
 
             </form>
         </div>
     )
 }
 
-export default SignUpPage
+export default ProfilePage

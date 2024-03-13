@@ -15,19 +15,24 @@ header div {
     cursor: pointer;
 }
 
-header div:hover {
+/* 
+ header div:hover {
     transition: all 1s ease-out;
     transform: scale(1.1);
-    /* Scale the text to 110% of its original size */
-}
+   
+}  */
 
 .userAction {
     display: flex;
+
+
 }
 
 .eachAction {
     display: flex;
+
     margin-left: 2px;
+
 
     align-items: center;
 
@@ -45,6 +50,20 @@ header div:hover {
 a {
     text-decoration: none;
 }
+
+.actions {
+    display: flex;
+    background-color: white;
+    padding: 10px;
+    color: red;
+
+    flex-direction: column;
+    font-size: 20px;
+
+
+}
+
+
 
 
 /* media screen */
