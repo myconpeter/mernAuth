@@ -1,10 +1,14 @@
 import asyncHandler from "express-async-handler"
 import User from "../models/userModels.js"
 import generateToken from "../utils/generateToken.js"
+import UserVerification from "../models/userVerification.js"
+import nodemailer from 'nodemailer'
+import { v4 as uuidv4 } from 'uuid';
+import sendVerification from "../mailOptions/sendVerification.js"
 
 // desc @Auth user / set Token
 // route POST api/users/auth
-//@acess public
+//@access public
 
 const authUser = asyncHandler(async (req, res) => {
 
@@ -13,23 +17,31 @@ const authUser = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email })
 
     if (user && (await user.matchPassword(password))) {
+       if(user.verified){
         generateToken(res, user._id)
         res.status(201).json({
             ...user._doc,
         })
+       } else{
+        res.status(401)
+        throw new Error('You have to be verified before login')
+       }
 
 
     }
     else {
         res.status(401)
-        throw new Error('Invaild email or password')
+        throw new Error('Invalid email or password')
     }
 })
 
 
 // desc @Auth user / Register user
 // route POST api/users/
-//@acess public
+//@access public
+
+
+
 
 const registerUser = asyncHandler(async (req, res) => {
 
@@ -42,29 +54,38 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new Error('user already exist')
     }
 
-    const user = await User.create({
+    const newUser = await User.create({
         name,
         email,
-        password
+        password,
+        verified: false
     })
 
-    if (user) {
-        generateToken(res, user._id)
-        res.status(201).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email
-        })
+    if (newUser) {
+       sendVerification(newUser, res)
     } else {
         res.status(401)
-        throw new Error('User creation was unsuccefully')
+        throw new Error('User creation was unsuccessfully')
     }
 })
 
 
 // desc @Auth user / Register user
+// route POST api/users/verify/:userId/:uniqueString
+//@access private
+
+const verifyEmail = asyncHandler(async(req, res)=>{
+   const {userId, uniqueString} = req.params
+   console.log(req.params)
+   res.send('ok')
+})
+
+
+
+
+// desc @Auth user / Register user
 // route POST api/users/logout
-//@acess private
+//@access private
 
 const logoutUser = asyncHandler(async (req, res) => {
 
@@ -125,4 +146,6 @@ const userEdit = asyncHandler(async (req, res) => {
 
 })
 
-export { authUser, userEdit, userProfile, logoutUser, registerUser }
+export { authUser, userEdit, userProfile, logoutUser, registerUser, verifyEmail }
+
+

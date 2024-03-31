@@ -1,5 +1,5 @@
 import express from 'express'
-import { authUser, userEdit, userProfile, logoutUser, registerUser } from '../controllers/userControllers.js'
+import { authUser, userEdit, userProfile, logoutUser, registerUser, verifyEmail } from '../controllers/userControllers.js'
 import { protect } from '../middleware/authMiddlewre.js'
 
 const router = express.Router()
@@ -9,6 +9,8 @@ router.post('/auth', authUser);
 router.post('/logout', logoutUser);
 
 router.post('/', registerUser);
+
+router.get('/verify/:userId/:uniqueString', verifyEmail)
 
 // router.put('/profile', userEdit)
 
