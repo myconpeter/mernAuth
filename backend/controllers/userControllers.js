@@ -76,7 +76,15 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const verifyEmail = asyncHandler(async(req, res)=>{
    const {userId, uniqueString} = req.params
-   console.log(req.params)
+
+   const emailExist = await UserVerification.findOne({userId})
+
+   if (emailExist){
+
+   } else{
+    
+   }
+  
    res.send('ok')
 })
 
