@@ -36,57 +36,6 @@ const authUser = asyncHandler(async (req, res) => {
 })
 
 
-// desc @Auth user / Register user
-// route POST api/users/
-//@access public
-
-
-
-
-const registerUser = asyncHandler(async (req, res) => {
-
-    const { name, email, password } = req.body
-
-    const userExist = await User.findOne({ email })
-
-    if (userExist) {
-        res.status(400)
-        throw new Error('user already exist')
-    }
-
-    const newUser = await User.create({
-        name,
-        email,
-        password,
-        verified: false
-    })
-
-    if (newUser) {
-       sendVerification(newUser, res)
-    } else {
-        res.status(401)
-        throw new Error('User creation was unsuccessfully')
-    }
-})
-
-
-// desc @Auth user / Register user
-// route POST api/users/verify/:userId/:uniqueString
-//@access private
-
-const verifyEmail = asyncHandler(async(req, res)=>{
-   const {userId, uniqueString} = req.params
-
-   const emailExist = await UserVerification.findOne({userId})
-
-   if (emailExist){
-
-   } else{
-    
-   }
-  
-   res.send('ok')
-})
 
 
 
@@ -154,6 +103,6 @@ const userEdit = asyncHandler(async (req, res) => {
 
 })
 
-export { authUser, userEdit, userProfile, logoutUser, registerUser, verifyEmail }
+export { authUser, userEdit, userProfile, logoutUser }
 
 

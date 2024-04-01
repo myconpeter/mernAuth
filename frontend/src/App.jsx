@@ -15,24 +15,26 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import ProfilePage from './pages/ProfilePage';
 import PrivateRoute from './components/PrivateRoute';
+import VerifiedLink from './pages/VerifiedLink';
 
 
 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Header />}>
+    <Route path='' >
+       
+      <Route path="/" element={<Header />}>
       <Route index element={<HomePage />} />
       <Route path='login' element={<LoginPage />} />
       <Route path='signup' element={<SignUpPage />} />
-
       <Route path='' element={<PrivateRoute />}>
         <Route path='profile' element={<ProfilePage />} />
 
       </Route>
 
-
-
+    </Route>
+    <Route path='verifiedlink' element={<VerifiedLink />} />
     </Route>
   )
 );

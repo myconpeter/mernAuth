@@ -40,9 +40,9 @@ const SignUpPage = () => {
 
             } else {
 
-                dispatch(setCredentials({ ...res }))
-                navigate('/')
-                toast.success(`Welcome ${res.data.name}`)
+                
+                navigate('/verifiedlink')
+               
 
             }
         }
