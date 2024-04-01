@@ -7,9 +7,9 @@ import { setCredentials } from '../slices/authSlice'
 import { toast } from 'react-toastify'
 import Loader from '../components/Loader'
 
-const LoginPage = () => {
+const RecoveryEmail = () => {
     const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+   
 
 
     const navigate = useNavigate()
@@ -53,39 +53,20 @@ const LoginPage = () => {
 
             <form onSubmit={onSubmit} className='LoginForm'>
                 <div>
-                    <h2>Log In</h2>
+                    <h2>Confirm Email Address</h2>
                 </div>
 
                 <div className='eachInput'>
 
-                    <label htmlFor="">Email Address</label>
+                    <label htmlFor=""> Email Address</label>
                     <input type="email" placeholder='Enter Email' value={email} onChange={(e) => (setEmail(e.target.value))} />
                 </div>
 
-
-                <div className='eachInput'>
-
-                    <label htmlFor="">Password</label>
-                    <input type="password" placeholder='Enter Password' value={password} onChange={(e) => (setPassword(e.target.value))} />
-                </div>
-
-                {isLoading ? <Loader /> : <button type='submit'>Log in</button>}
-
-
-
-                <div className='newCustomer'>
-                    <p>New Customer?  </p>
-
-                    <Link to='/signup'> Create Account</Link>
-                </div>
-
-                <div  className='newCustomer'>
-                    <Link to='/resetpassword'> Forgotten Password ?  </Link>
-                </div>
+                {isLoading ? <Loader /> : <button type='submit'>Reset</button>}
 
             </form>
         </div>
     )
 }
 
-export default LoginPage
+export default RecoveryEmail

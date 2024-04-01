@@ -16,6 +16,7 @@ import SignUpPage from './pages/SignUpPage';
 import ProfilePage from './pages/ProfilePage';
 import PrivateRoute from './components/PrivateRoute';
 import VerifiedLink from './pages/VerifiedLink';
+import RecoveryEmail from './pages/RecoveryEmail';
 
 
 
@@ -27,6 +28,8 @@ const router = createBrowserRouter(
       <Route path="/" element={<Header />}>
       <Route index element={<HomePage />} />
       <Route path='login' element={<LoginPage />} />
+      <Route path='resetpassword' element={<RecoveryEmail />} />
+      
       <Route path='signup' element={<SignUpPage />} />
       <Route path='' element={<PrivateRoute />}>
         <Route path='profile' element={<ProfilePage />} />
