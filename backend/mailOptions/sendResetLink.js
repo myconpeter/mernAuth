@@ -1,8 +1,8 @@
 
 
 
-const resetLink = ()=>{
-    console.log('reset')
+const resetLink = ({userId, email}, res)=>{
+    console.log(`${userId}, ${email}`)
 }
 
 

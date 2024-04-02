@@ -2,8 +2,13 @@ import User from '../models/userModels.js'
 import ConfirmPassword from '../models/passwordRest.js'
 import asyncHandler from 'express-async-handler'
 
+import resetLink from '../mailOptions/sendResetLink.js'
 
-import transporter from '../mailOptions/transporter.js'
+import express from 'express'
+
+const app = express()
+
+app.use(resetLink)
 
 // post request from the form
 
@@ -11,12 +16,10 @@ const confirmEmail = asyncHandler(async(req, res)=>{
 
     const {email} = req.body
    
-    const findEmail = await User.findOne({email})
+    const foundUser = await User.findOne({email})
 
-    if(findEmail){
-        res.status(200).json({
-            message: 'okk'
-        })
+    if(foundUser){
+       resetLink({foundUser, res})
 
     } else {
         res.status(401)
