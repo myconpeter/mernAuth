@@ -1,25 +1,31 @@
-import User from '../models/userModels.js'
-import ConfirmPassword from '../models/passwordRest.js'
-import asyncHandler from 'express-async-handler'
+import asyncHandler from "express-async-handler"
+import User from "../models/userModels.js"
+import bcrypt from 'bcrypt'
+import generateToken from "../utils/generateToken.js"
 
-import resetLink from '../mailOptions/sendResetLink.js'
+import PasswordReset from "../models/passwordReset.js"
 
+import resetLink from "../mailOptions/sendResetLink.js"
+
+import path from 'path'
 import express from 'express'
-
 const app = express()
+const __dirname = path.resolve()
+app.use(express.static(path.join(__dirname, 'backend/views')))
 
-app.use(resetLink)
+import nodemailer from 'nodemailer';
 
 // post request from the form
 
-const confirmEmail = asyncHandler(async(req, res)=>{
+const confirmEmail = asyncHandler(async (req, res) => {
 
-    const {email} = req.body
-   
-    const foundUser = await User.findOne({email})
+    const { email } = req.body
 
-    if(foundUser){
-       resetLink({foundUser, res})
+    const foundUser = await User.findOne({ email })
+
+    if (foundUser) {
+        // console.log(foundUser)
+        resetLink(foundUser, res)
 
     } else {
         res.status(401)
@@ -28,7 +34,11 @@ const confirmEmail = asyncHandler(async(req, res)=>{
 
 
 
-}) 
+})
+
+const getResetLink = asyncHandler(async (req, res) => {
+
+})
 
 
 export {

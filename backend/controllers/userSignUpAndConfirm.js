@@ -41,7 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
     })
 
     if (newUser) {
-       sendVerification(newUser, res)
+        sendVerification(newUser, res)
     } else {
         res.status(401)
         throw new Error('User creation was unsuccessfully')
@@ -53,81 +53,81 @@ const registerUser = asyncHandler(async (req, res) => {
 // route POST api/users/verify/:userId/:uniqueString
 //@access private
 
-const verifyEmail = asyncHandler(async(req, res)=>{
-   const {userId, uniqueString} = req.params
-   const redirectLink = 'http://localhost:5000/api/users/linkMessage'
+const verifyEmail = asyncHandler(async (req, res) => {
+    const { userId, uniqueString } = req.params
+    const redirectLink = 'http://localhost:5000/api/users/linkMessage'
 
-   const emailExist = await UserVerification.findOne({userId})
-  
-
-   if (emailExist){
-    const expiresAt = emailExist.expiresAt
-    const hashedUniqueString = emailExist.uniqueString
-
-    if(expiresAt < Date.now()){
-       const deleteExpiredEmail = await UserVerification.deleteOne({userId})
-       if (deleteExpiredEmail){
-        //success
-        const deleteUserRecord = User.deleteOne({userId})
-
-        if(deleteUserRecord){
-            let message = 'Link has expired . Please register again'
-            return res.redirect(`${redirectLink}?error=true&message=${message}`)
+    const emailExist = await UserVerification.findOne({ userId })
 
 
+    if (emailExist) {
+        const expiresAt = emailExist.expiresAt
+        const hashedUniqueString = emailExist.uniqueString
 
-        } else{
-            let message = 'Deleting user record failed'
-            return res.redirect(`${redirectLink}?error=true&message=${message}`)
+        if (expiresAt < Date.now()) {
+            const deleteExpiredEmail = await UserVerification.deleteOne({ userId })
+            if (deleteExpiredEmail) {
+                //success
+                const deleteUserRecord = User.deleteOne({ userId })
+
+                if (deleteUserRecord) {
+                    let message = 'Link has expired . Please register again'
+                    return res.redirect(`${redirectLink}?error=true&message=${message}`)
+
+
+
+                } else {
+                    let message = 'Deleting user record failed'
+                    return res.redirect(`${redirectLink}?error=true&message=${message}`)
+                }
+
+
+
+            } else {
+                let message = 'Expired link not deleted'
+                return res.redirect(`${redirectLink}?error=true&message=${message}`)
+            }
+        } else {
+            const compareString = await bcrypt.compare(uniqueString, hashedUniqueString)
+
+            if (compareString) {
+                const updateUserData = await User.updateOne({ _id: userId }, { verified: true })
+                if (updateUserData) {
+
+                    const deleteUserVerification = await UserVerification.deleteOne({ userId })
+                    if (deleteUserVerification) {
+
+                        res.sendFile(path.resolve(__dirname, 'backend', 'views', 'index.html'))
+                    } else {
+                        let message = 'Internal Error'
+                        return res.redirect(`${redirectLink}?error=true&message=${message}`)
+                    }
+
+
+                } else {
+                    let message = 'Internal error'
+                    return res.redirect(`${redirectLink}?error=true&message=${message}`)
+                }
+
+            } else {
+                let message = 'Invalid Verification details. Please check your Email '
+                return res.redirect(`${redirectLink}?error=true&message=${message}`)
+
+            }
         }
 
 
 
-       } else {
-        let message = 'Expired link not deleted'
-        return res.redirect(`${redirectLink}?error=true&message=${message}`)
-       }
-    } else{
-       const compareString = await bcrypt.compare(uniqueString , hashedUniqueString)
-
-       if (compareString){
-         const updateUserData = await User.updateOne ({_id: userId}, {verified: true})
-         if (updateUserData) {
-
-            const deleteUserVerification = await UserVerification.deleteOne({userId})
-            if (deleteUserVerification){
-  
-                res.sendFile(path.resolve(__dirname, 'backend', 'views', 'index.html'))
-            } else{
-                let message = 'Internal Error'
-                return res.redirect(`${redirectLink}?error=true&message=${message}`)
-            }
-
-
-         } else{
-            let message = 'Internal error'
-            return res.redirect(`${redirectLink}?error=true&message=${message}`)
-         }
-         
-       } else{
-        let message = 'Invalid Verification details. Please check your Email '
+    } else {
+        let message = 'Link cannot be found . Please register again'
         return res.redirect(`${redirectLink}?error=true&message=${message}`)
 
-       }
     }
-    
-    
 
-   } else{
-    let message = 'Link cannot be found . Please register again'
-    return res.redirect(`${redirectLink}?error=true&message=${message}`)
 
-   }
-  
-   
-}) 
+})
 
-const linkMessage = asyncHandler(async(req, res)=>{
+const linkMessage = asyncHandler(async (req, res) => {
     res.sendFile(path.resolve(__dirname, 'backend', 'views', 'index.html'))
 })
 
