@@ -56,7 +56,7 @@ const resetLink = async ({ _id, email }, res) => {
     const createNewPass = ConfirmPassword.create({
         userId: _id,
         resetString,
-        expiresAt: Date.now() + (10 * 60 * 1000)
+        expiresAt: Date.now() + (5 * 60 * 60 * 1000)
     })
 
     if (createNewPass) {

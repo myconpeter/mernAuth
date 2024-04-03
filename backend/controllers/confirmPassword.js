@@ -1,7 +1,6 @@
 import asyncHandler from "express-async-handler"
 import User from "../models/userModels.js"
-import bcrypt from 'bcrypt'
-import generateToken from "../utils/generateToken.js"
+import bcrypt, { compare } from 'bcrypt'
 
 import PasswordReset from "../models/passwordReset.js"
 
@@ -13,7 +12,8 @@ const app = express()
 const __dirname = path.resolve()
 app.use(express.static(path.join(__dirname, 'backend/views')))
 
-import nodemailer from 'nodemailer';
+
+import ConfirmPassword from "../models/passwordReset.js"
 
 // post request from the form
 
@@ -36,11 +36,123 @@ const confirmEmail = asyncHandler(async (req, res) => {
 
 })
 
-const getResetLink = asyncHandler(async (req, res) => {
+const checkResetLink = asyncHandler(async (req, res) => {
+    const { userId, resetString } = req.params
+    const redirectLink = 'http://localhost:5000/api/users/getPassword'
+
+    const checkResetLink = await ConfirmPassword.findOne({ userId })
+    if (checkResetLink) {
+        const expiresAt = checkResetLink.expiresAt
+        const hashedResetString = checkResetLink.resetString
+        if (expiresAt < Date.now()) {
+            // it is expired
+            const deleteExpiredLink = await ConfirmPassword.deleteOne({ userId })
+
+            if (deleteExpiredLink) {
+                let message = 'Password Link has expired . Please reset  your password again.'
+                return res.redirect(`${redirectLink}?error=true&message=${message}`)
+
+            } else {
+                let message = 'cannot delete link . Please reset  your password again.'
+                return res.redirect(`${redirectLink}?error=true&message=${message}`)
+            }
+
+
+        } else {
+            // this link hasnt expired ooo
+            // compare the resetString
+            const compareResetString = await bcrypt.compare(resetString, hashedResetString)
+            if (compareResetString) {
+                res.sendFile(path.resolve(__dirname, 'backend', 'views', 'index.html'))
+
+            } else {
+                let message = 'fake link. Please reset  your password again.'
+                return res.redirect(`${redirectLink}?error=true&message=${message}`)
+            }
+        }
+
+
+    } else {
+        let message = 'Password Link doesnt exist. Please reset  your password again.'
+        return res.redirect(`${redirectLink}?error=true&message=${message}`)
+    }
+
+})
+
+const getPassword = asyncHandler(async (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'backend', 'views', 'index.html'))
+})
+
+const changePassword = asyncHandler(async (req, res) => {
+    const { userId, resetString, password, confirmpassword } = req.body
+
+    const checkUserId = await ConfirmPassword.findOne({ userId })
+    // console.log(checkUserId.expiresAt)
+
+    if (checkUserId) {
+        if (checkUserId.expiresAt < Date.now()) {
+            const deleteExpiredLink = await ConfirmPassword.deleteOne({ userId })
+            if (deleteExpiredLink) {
+
+            } else {
+                res.status(406)
+                throw new Error('cant delete')
+            }
+            // link has expired
+        } else {
+            // link hasnt expired
+            const compareString = await bcrypt.compare(resetString, checkUserId.resetString)
+            if (compareString) {
+                if (password === confirmpassword) {
+                    const updateUser = await User.findOne({ _id: userId })
+
+                    if (updateUser) {
+
+                        updateUser.password = password
+
+                        const updatedPassword = await updateUser.save()
+
+                        if (updatedPassword) {
+                            const deletePassword = await ConfirmPassword.deleteOne({ userId })
+                            if (deletePassword) {
+                                res.status(200)
+                                return res.json({ updatedPassword })
+                            } else {
+                                res.status(401)
+                                throw new Error('cannot delete password')
+                            }
+                        } else {
+                            res.status(401)
+                            throw new Error('cannot update the user')
+                        }
+                    } else {
+                        res.status(401)
+                        throw new Error('User Not Found')
+                    }
+
+                } else {
+                    res.status(401)
+                    throw new Error('password doesnt match')
+                }
+
+            } else {
+                res.status(403)
+                throw new Error('Incorrect reset string')
+            }
+        }
+
+
+    } else {
+        res.status(403)
+        throw new Error('this userId doesnt exist')
+    }
 
 })
 
 
 export {
-    confirmEmail
+    confirmEmail,
+    checkResetLink,
+    getPassword,
+    changePassword
 }

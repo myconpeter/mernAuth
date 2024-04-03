@@ -1,9 +1,9 @@
 import express from 'express'
 import { authUser, userEdit, userProfile, logoutUser } from '../controllers/userControllers.js'
-import{registerUser, verifyEmail, linkMessage} from '../controllers/userSignUpAndConfirm.js'
+import { registerUser, verifyEmail, linkMessage } from '../controllers/userSignUpAndConfirm.js'
 import { protect } from '../middleware/authMiddlewre.js'
 
-import { confirmEmail } from '../controllers/confirmPassword.js'
+import { confirmEmail, checkResetLink, getPassword, changePassword } from '../controllers/confirmPassword.js'
 
 const router = express.Router()
 
@@ -23,5 +23,8 @@ router.route('/profile').get(protect, userProfile).put(protect, userEdit)
 /// confirmPassword route 
 
 router.post('/confirmEmail', confirmEmail)
+router.get('/reset/:userId/:resetString', checkResetLink)
+router.get('/getPassword', getPassword)
+router.post('/changepassword', changePassword)
 
 export default router

@@ -1,12 +1,8 @@
-import nodemailer from 'nodemailer'
+import nodemailer from 'nodemailer';
 
 import dotenv from 'dotenv'
 
 dotenv.config()
-
-
-// nodemailer setup
-// nodemailer setup
 
 // Create a transporter using Gmail SMTP
 let transporter = nodemailer.createTransport({
@@ -19,12 +15,10 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-transporter.verify((success, error) => {
-    success ? console.log(success) : console.log(error)
+// verify transpoter
+
+transporter.verify((error, success) => {
+    error ? console.log(error) : console.log(success)
 })
-
-
-// nodemailer setup
-
 
 export default transporter
