@@ -79,7 +79,7 @@ const LoginPage = () => {
                     <Link to='/signup'> Create Account</Link>
                 </div>
 
-                <div  className='newCustomer'>
+                <div className='newCustomer'>
                     <Link to='/resetpassword'> Forgotten Password ?  </Link>
                 </div>
 
