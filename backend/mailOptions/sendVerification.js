@@ -3,8 +3,8 @@ import UserVerification from '../models/userVerification.js';
 import transporter from './transporter.js';
 
 
-const sendVerification = async({_id, email}, res) =>{
-    const currentUrl = "http://localhost:3000"
+const sendVerification = async ({ _id, email }, res) => {
+    const currentUrl = "https://mernauth-p168.onrender.com"
     const uniqueString = uuidv4() + _id
     const activateLink = `${currentUrl}/api/users/verify/${_id}/${uniqueString}`;
 
@@ -52,7 +52,7 @@ const sendVerification = async({_id, email}, res) =>{
         `
     }
 
-    const newUserVerification =  await UserVerification.create({
+    const newUserVerification = await UserVerification.create({
         userId: _id,
         uniqueString,
         createdAt: Date.now(),
@@ -60,7 +60,7 @@ const sendVerification = async({_id, email}, res) =>{
 
     })
 
-    if(newUserVerification){
+    if (newUserVerification) {
 
         const sendMail = await transporter.sendMail(sendMailOptions)
 
@@ -71,7 +71,7 @@ const sendVerification = async({_id, email}, res) =>{
             })
         }
 
-    } else{
+    } else {
         res.status(401)
         throw new Error('userVerification creation failed ')
     }
