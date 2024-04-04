@@ -63,7 +63,7 @@ const checkResetLink = asyncHandler(async (req, res) => {
             // compare the resetString
             const compareResetString = await bcrypt.compare(resetString, hashedResetString)
             if (compareResetString) {
-                res.sendFile(path.resolve(__dirname, 'backend', 'views', 'index.html'))
+                return res.redirect(`http://localhost:3000/getPassword/${userId}/${resetString}`)
 
             } else {
                 let message = 'fake link. Please reset  your password again.'
@@ -84,7 +84,8 @@ const getPassword = asyncHandler(async (req, res) => {
 })
 
 const changePassword = asyncHandler(async (req, res) => {
-    const { userId, resetString, password, confirmpassword } = req.body
+
+    const { userId, resetString, password, confirmPassword } = req.body
 
     const checkUserId = await ConfirmPassword.findOne({ userId })
     // console.log(checkUserId.expiresAt)
@@ -103,7 +104,7 @@ const changePassword = asyncHandler(async (req, res) => {
             // link hasnt expired
             const compareString = await bcrypt.compare(resetString, checkUserId.resetString)
             if (compareString) {
-                if (password === confirmpassword) {
+                if (password === confirmPassword) {
                     const updateUser = await User.findOne({ _id: userId })
 
                     if (updateUser) {
@@ -132,7 +133,7 @@ const changePassword = asyncHandler(async (req, res) => {
 
                 } else {
                     res.status(401)
-                    throw new Error('password doesnt match')
+                    throw new Error('password doesnt no match')
                 }
 
             } else {

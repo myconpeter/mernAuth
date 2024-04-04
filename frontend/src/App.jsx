@@ -17,6 +17,7 @@ import ProfilePage from './pages/ProfilePage';
 import PrivateRoute from './components/PrivateRoute';
 import VerifiedLink from './pages/VerifiedLink';
 import RecoveryEmail from './pages/RecoveryEmail';
+import ChangePassword from './pages/ChangePassword';
 
 
 
@@ -24,20 +25,21 @@ import RecoveryEmail from './pages/RecoveryEmail';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='' >
-       
+
       <Route path="/" element={<Header />}>
-      <Route index element={<HomePage />} />
-      <Route path='login' element={<LoginPage />} />
-      <Route path='resetpassword' element={<RecoveryEmail />} />
-      
-      <Route path='signup' element={<SignUpPage />} />
-      <Route path='' element={<PrivateRoute />}>
-        <Route path='profile' element={<ProfilePage />} />
+        <Route index element={<HomePage />} />
+        <Route path='login' element={<LoginPage />} />
+        <Route path='resetpassword' element={<RecoveryEmail />} />
+        <Route path='getPassword/:userId/:resetString' element={<ChangePassword />} />
+
+        <Route path='signup' element={<SignUpPage />} />
+        <Route path='' element={<PrivateRoute />}>
+          <Route path='profile' element={<ProfilePage />} />
+
+        </Route>
 
       </Route>
-
-    </Route>
-    <Route path='verifiedlink' element={<VerifiedLink />} />
+      <Route path='verifiedlink' element={<VerifiedLink />} />
     </Route>
   )
 );

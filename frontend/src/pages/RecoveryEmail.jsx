@@ -2,20 +2,20 @@ import React, { useState, useEffect } from 'react'
 import './LoginPage.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLoginMutation } from '../slices/userApiSlice'
+import { useResetEmailMutation } from '../slices/userApiSlice'
 import { setCredentials } from '../slices/authSlice'
 import { toast } from 'react-toastify'
 import Loader from '../components/Loader'
 
 const RecoveryEmail = () => {
     const [email, setEmail] = useState('')
-   
+
 
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const [login, { isLoading }] = useLoginMutation()
+    const [resetEmail, { isLoading }] = useResetEmailMutation()
 
     const { userInfo } = useSelector((state) => state.auth)
 
@@ -32,7 +32,7 @@ const RecoveryEmail = () => {
     const onSubmit = async (e) => {
         e.preventDefault()
 
-        const res = await login({ email, password })
+        const res = await resetEmail({ email })
 
 
         if (res.error) {
@@ -40,9 +40,9 @@ const RecoveryEmail = () => {
 
         } else {
 
-            dispatch(setCredentials({ ...res }))
-            navigate('/')
-            toast.success(`Welcome ${res.data.name}`)
+
+            navigate('/verifiedlink')
+
 
         }
 
