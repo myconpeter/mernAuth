@@ -5,9 +5,9 @@ import transporter from './transporter.js'
 
 const resetLink = async ({ _id, email }, res) => {
     // console.log(`${_id}, ${email}`)
-    const currentUrl = 'https://mernauth-p168.onrender.com'; // Replace with your website URL
+    const currentUrl = 'http://localhost:5000'; // Replace with your website URL
     const resetString = uuidv4() + _id
-    const activationLink = `${currentUrl}/api/users/reset/${_id}/${resetString}`;
+    const activationLink = `${currentUrl}/getPassword/${_id}/${resetString}`;
 
 
     const mailDetails = {

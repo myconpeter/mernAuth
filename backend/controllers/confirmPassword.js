@@ -38,44 +38,45 @@ const confirmEmail = asyncHandler(async (req, res) => {
 
 const checkResetLink = asyncHandler(async (req, res) => {
     const { userId, resetString } = req.params
-    const redirectLink = 'http://localhost:5000/api/users/getPassword'
+    res.send('hello')
+    //     const redirectLink = 'http://localhost:5000/api/users/getPassword'
 
-    const checkResetLink = await ConfirmPassword.findOne({ userId })
-    if (checkResetLink) {
-        const expiresAt = checkResetLink.expiresAt
-        const hashedResetString = checkResetLink.resetString
-        if (expiresAt < Date.now()) {
-            // it is expired
-            const deleteExpiredLink = await ConfirmPassword.deleteOne({ userId })
+    //     const checkResetLink = await ConfirmPassword.findOne({ userId })
+    //     if (checkResetLink) {
+    //         const expiresAt = checkResetLink.expiresAt
+    //         const hashedResetString = checkResetLink.resetString
+    //         if (expiresAt < Date.now()) {
+    //             // it is expired
+    //             const deleteExpiredLink = await ConfirmPassword.deleteOne({ userId })
 
-            if (deleteExpiredLink) {
-                let message = 'Password Link has expired . Please reset  your password again.'
-                return res.redirect(`${redirectLink}?error=true&message=${message}`)
+    //             if (deleteExpiredLink) {
+    //                 let message = 'Password Link has expired . Please reset  your password again.'
+    //                 return res.redirect(`${redirectLink}?error=true&message=${message}`)
 
-            } else {
-                let message = 'cannot delete link . Please reset  your password again.'
-                return res.redirect(`${redirectLink}?error=true&message=${message}`)
-            }
-
-
-        } else {
-            // this link hasnt expired ooo
-            // compare the resetString
-            const compareResetString = await bcrypt.compare(resetString, hashedResetString)
-            if (compareResetString) {
-                return res.redirect(`http://localhost:3000/getPassword/${userId}/${resetString}`)
-
-            } else {
-                let message = 'fake link. Please reset  your password again.'
-                return res.redirect(`${redirectLink}?error=true&message=${message}`)
-            }
-        }
+    //             } else {
+    //                 let message = 'cannot delete link . Please reset  your password again.'
+    //                 return res.redirect(`${redirectLink}?error=true&message=${message}`)
+    //             }
 
 
-    } else {
-        let message = 'Password Link doesnt exist. Please reset  your password again.'
-        return res.redirect(`${redirectLink}?error=true&message=${message}`)
-    }
+    //         } else {
+    //             // this link hasnt expired ooo
+    //             // compare the resetString
+    //             const compareResetString = await bcrypt.compare(resetString, hashedResetString)
+    //             if (compareResetString) {
+    //                 return res.redirect(`http://localhost:5000/getPassword/:${userId}/:${resetString}`)
+
+    //             } else {
+    //                 let message = 'fake link. Please reset  your password again.'
+    //                 return res.redirect(`${redirectLink}?error=true&message=${message}`)
+    //             }
+    //         }
+
+
+    //     } else {
+    //         let message = 'Password Link doesnt exist. Please reset  your password again.'
+    //         return res.redirect(`${redirectLink}?error=true&message=${message}`)
+    //     }
 
 })
 
