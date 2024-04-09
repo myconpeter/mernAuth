@@ -57,7 +57,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
 
 
     const { userId, uniqueString } = req.params
-    const redirectLink = `http://localhost:3000/confirmverification/:${userId}/:${uniqueString}`
+    const redirectLink = `https://mernauth-p168.onrender.com/confirmverification/:${userId}/:${uniqueString}`
 
     const emailExist = await UserVerification.findOne({ userId })
 
