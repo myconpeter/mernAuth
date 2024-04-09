@@ -4,7 +4,7 @@ import transporter from './transporter.js';
 
 
 const sendVerification = async ({ _id, email }, res) => {
-    const currentUrl = 'http://localhost:8000'
+    const currentUrl = 'http://localhost:5000'
     const uniqueString = uuidv4() + _id
     const activateLink = `${currentUrl}/verify/${_id}/${uniqueString}`;
 
