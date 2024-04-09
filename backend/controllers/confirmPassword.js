@@ -36,6 +36,12 @@ const confirmEmail = asyncHandler(async (req, res) => {
 
 })
 
+/// check reset link
+
+const checkResetLink = async (req, res) => {
+    res.send('checking reset link')
+}
+
 
 
 const getPassword = asyncHandler(async (req, res) => {
@@ -112,6 +118,7 @@ const changePassword = asyncHandler(async (req, res) => {
 
 export {
     confirmEmail,
+    checkResetLink,
 
     getPassword,
     changePassword

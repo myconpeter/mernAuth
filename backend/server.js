@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser'
 import path from 'path'
 
 import { verifyEmail } from './controllers/userSignUpAndConfirm.js'
+import { checkResetLink } from './controllers/confirmPassword.js'
 
 // import connectDB from './db/db.js'
 
@@ -20,6 +21,7 @@ const app = express()
 // deployment
 
 app.get('/verify/:userId/:uniqueString', verifyEmail)
+app.get('/checkResetLink/:userId/:resetString', checkResetLink)
 
 if (process.env.NODE_ENV === "production") {
     const __dirname = path.resolve()
