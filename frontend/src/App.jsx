@@ -18,6 +18,7 @@ import PrivateRoute from './components/PrivateRoute';
 import VerifiedLink from './pages/VerifiedLink';
 import RecoveryEmail from './pages/RecoveryEmail';
 import ChangePassword from './pages/ChangePassword';
+import ConfirmLink from './pages/ConfirmLink';
 
 
 
@@ -40,6 +41,8 @@ const router = createBrowserRouter(
 
       </Route>
       <Route path='verifiedlink' element={<VerifiedLink />} />
+      <Route path='confirmverification/:userId/:resetString' element={<ConfirmLink />} />
+
     </Route>
   )
 );

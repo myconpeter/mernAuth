@@ -3,6 +3,9 @@ import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import path from 'path'
+
+import { verifyEmail } from './controllers/userSignUpAndConfirm.js'
+
 // import connectDB from './db/db.js'
 
 
@@ -20,12 +23,16 @@ if (process.env.NODE_ENV === "production") {
     const __dirname = path.resolve()
     app.use(express.static(path.join(__dirname, 'frontend/dist')))
 
+
+    app.get('/verify/:userId/:uniqueString', verifyEmail)
+
     app.get('*', (req, res) =>
         res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
     );
     console.log('joining')
 
 } else {
+    app.get('/verify/:userId/:uniqueString', verifyEmail)
     app.get('/', (req, res) => res.send('Server is ready!'))
 }
 

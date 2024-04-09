@@ -54,8 +54,10 @@ const registerUser = asyncHandler(async (req, res) => {
 //@access private
 
 const verifyEmail = asyncHandler(async (req, res) => {
+
+
     const { userId, uniqueString } = req.params
-    const redirectLink = 'http://localhost:5000/api/users/linkMessage'
+    const redirectLink = `http://localhost:3000/confirmverification/:${userId}/:${uniqueString}`
 
     const emailExist = await UserVerification.findOne({ userId })
 
@@ -97,7 +99,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
                     const deleteUserVerification = await UserVerification.deleteOne({ userId })
                     if (deleteUserVerification) {
 
-                        res.sendFile(path.resolve(__dirname, 'backend', 'views', 'index.html'))
+                        return res.redirect(redirectLink)
                     } else {
                         let message = 'Internal Error'
                         return res.redirect(`${redirectLink}?error=true&message=${message}`)
