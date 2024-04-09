@@ -4,7 +4,7 @@ import transporter from './transporter.js';
 
 
 const sendVerification = async ({ _id, email }, res) => {
-    const currentUrl = 'https://mernauth-p168.onrender.com'
+    const currentUrl = 'http://localhost:8000'
     const uniqueString = uuidv4() + _id
     const activateLink = `${currentUrl}/verify/${_id}/${uniqueString}`;
 

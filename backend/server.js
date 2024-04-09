@@ -14,7 +14,7 @@ dotenv.config()
 
 import userRoutes from './routes/userRoutes.js'
 import { notFound, errorHandler } from './middleware/errorMiddle.js'
-const port = process.env.Port || 8000
+const port = process.env.PORT || 8000
 const app = express()
 
 // deployment
@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, 'frontend/dist')))
 
 
-    app.get('https://mernauth-p168.onrender.com/verify/:userId/:uniqueString', verifyEmail)
+    app.get('/verify/:userId/:uniqueString', verifyEmail)
 
     app.get('*', (req, res) =>
         res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
