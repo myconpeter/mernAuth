@@ -65,7 +65,7 @@ const checkResetLink = asyncHandler(async (req, res) => {
             // compare the resetString
             const compareResetString = await bcrypt.compare(resetString, hashedResetString)
             if (compareResetString) {
-                return res.redirect(`http://localhost:3000/getPassword/${userId}/${resetString}`)
+                return res.redirect(`${redirectLink}`)
 
             } else {
                 let message = 'fake link. Please reset  your password again.'
